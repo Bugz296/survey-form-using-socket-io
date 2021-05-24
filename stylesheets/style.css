@@ -1,0 +1,32 @@
+*{
+    outline: 0px dashed green;
+}
+#main-container{
+    width: 700px;
+    height: 700px;
+    margin: auto;
+}
+    #sub-container{
+        width: 300px;
+        height: 120px;
+        margin: auto;
+        font-weight: bold;
+        background-color: aquamarine;
+        padding: 15px;
+        display: none;
+    }
+    table{
+        margin: auto;
+        border: 1px solid #11ffff;
+    }
+        table thead td{
+            background-color: #9bffff;
+            text-align: center;
+        }
+        table tbody td{
+            padding: 5px 15px;
+        }
+        table tfoot td{
+            padding: 10px;
+            text-align: center;
+        }

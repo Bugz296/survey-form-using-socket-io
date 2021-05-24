@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+        <title>Survey Form</title>
+        <script>
+            $(document).ready(function(){
+                var socket = io();
+                /* When submit button is clicked */
+                $('form').submit(function(){
+                    socket.emit('posting_form', $(this).serializeArray());
+                    return false;
+                });
+                /* Socket IO listener */
+                socket.on('updated_message', function(res){
+                    /* if successfully passed the data from server to client */
+                    if(res){
+                        $('#sub-container').show();
+                    }
+                    let html = `<p>You emmitted the following information to the server: { 
+                        name: "${res.data[0].value} ${res.data[1].value}",
+                        location: "${res.data[2].value}",
+                        language: "${res.data[3].value}",
+                        } <br>
+                        Your lucky number emmitted by the server is ${res.luckyNum} </p>`;
+                    $('#sub-container').html(html);
+                });
+
+            });
+        </script>
+    </head>
+    <body>
+        <div id="main-container">
+            <div id="sub-container">
+            </div>
+            <form action="/users" method="post">
+                <table>
+                    <thead>
+                        <tr>
+                            <td colspan="2">
+                                <h1>Survey Form</h1>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>First Name: </td>
+                            <td><input type="text" name="first_name"></td>
+                        </tr>
+                        <tr>
+                            <td>Last Name: </td>
+                            <td><input type="text" name="last_name"></td>
+                        </tr>
+                        <tr>
+                            <td>Dojo Location: </td>
+                            <td>
+                                <select name="location">
+                                    <option value="Mountain View">Mountain View</option>
+                                    <option value="Philippines">Philippines</option>
+                                    <option value="India">India</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Favorite Language: </td>
+                            <td>
+                                <select name="language">
+                                    <option value="Javascript">Javascript</option>
+                                    <option value="Python">Python</option>
+                                    <option value="Java">Java</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">
+                                <input type="submit">
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </form>
+        </div>
+    </body>
+</html>
